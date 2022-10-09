@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
-  AuthScreen({Key? key}) : super(key: key);
+  final Function(int) onChangedStep;
+
+  AuthScreen({Key? key, required this.onChangedStep}) : super(key: key);
 
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+final RegExp emailRegex = RegExp(r"[a-z0-9\._-]+@[a-z0-9\._-]+\.[a-z]+");
+
+late String _email = "";
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -46,6 +53,7 @@ class _AuthScreenState extends State<AuthScreen> {
           height: 50.0,
         ),
         Form(
+          key: _formKey,
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -54,6 +62,14 @@ class _AuthScreenState extends State<AuthScreen> {
               height: 10.0,
             ),
             TextFormField(
+              validator: (value) =>
+                value != null && (value.isEmpty || !emailRegex.hasMatch(value)) 
+                ? 'Please enter a valid email' 
+                : null,
+              //Quand le formulaire va changer, on effectue une action
+              onChanged: (value) => setState(() {
+                _email = value; // On set la propriété
+              }),
               decoration: InputDecoration(
                   hintText: 'Ex : john.doe@gmail.com',
                   border: OutlineInputBorder(
@@ -74,7 +90,12 @@ class _AuthScreenState extends State<AuthScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
-              onPressed: () => print('send'),
+              onPressed: !emailRegex.hasMatch(_email) ? null : (){
+                if(_formKey.currentState!.validate()){
+                  print(_email);
+                  widget.onChangedStep(1);
+                }
+              },
               child: Text(
                 'continue'.toUpperCase(),
                 style: TextStyle(color: Colors.white),
