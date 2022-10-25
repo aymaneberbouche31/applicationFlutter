@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class PasswordScreen extends StatefulWidget {
-  final Function(int) onChangedStep;
+  final Function(int?,String?) onChangedStep;
   const PasswordScreen({super.key, required this.onChangedStep});
 
   @override
@@ -29,7 +29,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
               leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   color: Colors.black,
-                  onPressed: () => widget.onChangedStep(0),
+                  onPressed: () => widget.onChangedStep(0, null),
                   ),
             ),
       body : Center(
@@ -88,7 +88,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
 
               onPressed: _password.length < 6 ? null : (){
                 if(_formKey.currentState!.validate()){
-                  print(_password);
+                  widget.onChangedStep(null,_password);
                 }
               },
               child: Text(

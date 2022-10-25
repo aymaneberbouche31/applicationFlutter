@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
-  final Function(int) onChangedStep;
+  final Function(int,String) onChangedStep;
 
   AuthScreen({Key? key, required this.onChangedStep}) : super(key: key);
 
