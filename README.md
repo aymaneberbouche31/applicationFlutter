@@ -1,3 +1,2 @@
 # application
-
-Une superbe application
+Création d'un projet Flutter :)
