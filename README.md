@@ -1,3 +1,3 @@
 # application
 
-Une super application
+Une superbe application
